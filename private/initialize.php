@@ -8,6 +8,5 @@
   define("PUBLIC_P", ROOT_P . '/public');
 
   $conn = OpenCon();
-  confirm_db_connect($conn);
   $errors = [];
 ?>
