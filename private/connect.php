@@ -10,17 +10,18 @@ function OpenCon(){
     // $dbpass = "root";
     // $db = "pandamic_tracker";
 
-    $conn = new mysqli($dbhost, $dbuser, 
-    $dbpass,$db) or die("Connect failed: %s\n". 
-    $conn -> error);
+    $conn = mysqli_connect($dbhost, $dbuser, $dbpass,$db); 
+    confirm_connection();
     return $conn;
 }
 function CloseCon($conn){
-    $conn -> close();
+    if(isset($conn)) {
+        mysqli_close($conn);
+    }
 }
-function confirm_db_connect($conn) {
-    if($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+function confirm_connection() {
+    if(mysqli_connect_errno()) {
+        die("Connection failed: " . mysqli_connect_error());
     }
   }
 ?>
