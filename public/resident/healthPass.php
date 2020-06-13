@@ -25,6 +25,7 @@
   $fname = $row['fname'];
   $lname = $row["lname"];
   $dob = $row["dob"];
+  date_default_timezone_set("America/Vancouver");
   $today = date("Y-m-d");
 
   $yesterday = date("Y-m-d", strtotime("-1 day"));
