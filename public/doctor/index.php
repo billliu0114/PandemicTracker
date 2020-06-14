@@ -1,9 +1,6 @@
-<?php
-<<<<<<< Updated upstream
-echo 'Hello World';
-?>
+<?php require_once('../../private/initialize.php'); ?>
 
-=======
+<?php
 // Redirects to Login.html if not logged in
   if($_SESSION['Active'] == false){
     header("location:../../index.php");
@@ -106,4 +103,3 @@ $activeCases = $row_doc['activeCases'];
 <?php include(PRIVATE_P . '/footer.php'); ?>
 
 
->>>>>>> Stashed changes
