@@ -36,6 +36,8 @@ $result_set = get_existing_cases_table_set($Did);
 
 <body>
     <h2>Existing Cases</h2>
+    <a href="index.php">Back</a>
+    <br><br>
     <table>
         <tr>
             <th>Case#</th>
@@ -54,10 +56,7 @@ $result_set = get_existing_cases_table_set($Did);
             </tr>
         <?php } ?>
     </table>
-    <br>
-    <a href="index.php">Back</a>
 </body>
-
 </html>
 
 <?php include(PRIVATE_P . '/footer.php'); ?>
