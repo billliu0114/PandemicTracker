@@ -9,7 +9,6 @@
   if(isset($_POST['logout'])) {
     logout();
   }
-
 $sql_query_doc = "select Did as ID from Link_Doctor_Account
                     where username='".$_SESSION["uname"]."'";
 $result_doc = mysqli_query($conn,$sql_query_doc);
@@ -44,13 +43,12 @@ $sql_query_doc = "select count(*) as activeCases
 $result_doc = mysqli_query($conn,$sql_query_doc);
 $row_doc = mysqli_fetch_assoc($result_doc);
 $activeCases = $row_doc['activeCases'];
-  
+
 ?>
 
 <!DOCTYPE html>
     <head>
             <title>Pandemic Tracker</title>
-
             <style>
               .btn{
                 text-decoration: none;

@@ -39,13 +39,11 @@
   $result_doc = mysqli_query($conn,$sql_query_doc);
   $row_doc = mysqli_fetch_assoc($result_doc);
   $city = $row_doc['city'];
-
 ?>
 
 <!DOCTYPE html>
     <head>
             <title>Pandemic Tracker</title>
-
             <style>
               .btn{
                 text-decoration: none;
