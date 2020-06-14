@@ -38,7 +38,7 @@ $address = $row_doc['address'];
 
 $sql_query_doc = "select count(*) as activeCases 
                     from Cases
-                    where RecoveryStatus = 'Negative'
+                    where RecoveryStatus = 'Positive'
                     group by RecoveryStatus";
 $result_doc = mysqli_query($conn,$sql_query_doc);
 $row_doc = mysqli_fetch_assoc($result_doc);
@@ -83,7 +83,7 @@ $activeCases = $row_doc['activeCases'];
           
             
             <a href="viewcases.php" class="btn">View Existing Cases</a>
-            <a href="createcases.php" class="btn">Create New Case</a>
+            <a href="createcase.php" class="btn">Create New Case</a>
 
             <form method="post" class="logout"> 
               <input type="submit" name="logout" value="Log Out"/> 
