@@ -27,12 +27,23 @@
   $dob = $row_doc["dob"];
 
 
+  $sql_query_doc = "select Street as street, PostalCode as postcode from Resident
+                      where Rid='".$Rid."'";
+  $result_doc = mysqli_query($conn,$sql_query_doc);
+  $row_doc = mysqli_fetch_assoc($result_doc);
+  $street = $row_doc['street'];
+  $postcode = $row_doc['postcode'];
+
+  $sql_query_doc = "select City as city from Main_Address
+                      where Street='".$street."' and PostalCode ='".$postcode."'";
+  $result_doc = mysqli_query($conn,$sql_query_doc);
+  $row_doc = mysqli_fetch_assoc($result_doc);
+  $city = $row_doc['city'];
 ?>
 
 <!DOCTYPE html>
     <head>
             <title>Pandemic Tracker</title>
-
             <style>
               .btn{
                 text-decoration: none;
@@ -55,12 +66,13 @@
     
     <body>
         <h1> Personal Account</h1>
+        <h1> <?php echo $fname ?> <?php echo $lname ?> </h3>
         <h3>ID: <?php echo $Rid ?></h3>
-        <h3>Name: <?php echo $fname ?> <?php echo $lname ?> </h3>
         <h3>Phone Number <?php echo $pnum ?><h5>
         <h3>Email: <?php echo $email ?></h3>
         <h3>Healthcare Number: <?php echo $hnum ?> <h5>
         <h3>Date of Birth: <?php echo $dob ?> <h5>
+        <h3>Main Address: <?php echo $street ?>, <?php echo $city ?>,  <?php echo $postcode ?> <h5>
         
         <div>
           
