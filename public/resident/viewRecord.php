@@ -67,6 +67,24 @@
                 left:25px;
               }
             </style>
+            <style>
+              table {
+                border-collapse: collapse;
+                width: 100%;
+              }
+
+              td,
+              th {
+                border: 1px solid #000000;
+                text-align: left;
+                padding: 8px;
+              }
+
+              tr:nth-child(even) {
+                text-align: left;
+                background-color: #dddddd;
+              }
+            </style>
     </head>
     
     <body>
