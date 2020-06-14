@@ -132,8 +132,9 @@ Create Table Works_At (
 
 Create Table Cases (
     CaseNum 		INTEGER AUTO_INCREMENT,
-    ConfirmedDate 	DATE ,
+    EncounterDate 	DATE ,
     RecoveryStatus 	Varchar(60),
+	Notes           Varchar(5000), 
     Did 			INTEGER NOT NULL,
     RID 			INTEGER NOT NULL,
     PRIMARY KEY (CaseNum),
