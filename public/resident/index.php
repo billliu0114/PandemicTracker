@@ -1,3 +1,5 @@
+<?php require_once('../../private/initialize.php'); ?>
+
 <?php
 // Redirects to Login.html if not logged in
   if($_SESSION['Active'] == false){
