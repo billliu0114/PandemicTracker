@@ -43,7 +43,6 @@ $sql_query_doc = "select count(*) as activeCases
 $result_doc = mysqli_query($conn,$sql_query_doc);
 $row_doc = mysqli_fetch_assoc($result_doc);
 $activeCases = $row_doc['activeCases'];
-
 ?>
 
 <!DOCTYPE html>
@@ -99,5 +98,3 @@ $activeCases = $row_doc['activeCases'];
 </html>
 
 <?php include(PRIVATE_P . '/footer.php'); ?>
-
-
