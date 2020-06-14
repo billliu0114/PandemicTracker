@@ -9,59 +9,40 @@
     logout();
   }
 
-  // To Be Finished...
+  $Rid = get_rid($_SESSION["uname"]);
 
-  // $sql_query = "select Rid as ID 
-  //                   from Link_Personal_Account
-  //                   where username='".$_SESSION["uname"]."'";
-  // $result = mysqli_query($conn,$sql_query);
-  // $row = mysqli_fetch_assoc($result);
-  // $Rid = $row['ID'];
+  // Get the resident's name:
+  $sql_query = "select R.FirstName as fname, R.LastName as lname
+                from Resident R
+                where Rid ='".$Rid."'";
+  $result = mysqli_query($conn,$sql_query);
+  $row = mysqli_fetch_assoc($result);
+  $fname = $row['fname'];
+  $lname = $row["lname"];
 
-  // // information needed to present
-  // $sql_query = "select R.FirstName as fname, R.LastName as lname, R.DOB as dob
-  //                   from Resident R
-  //                   where Rid ='".$Rid."'";
-  // $result = mysqli_query($conn,$sql_query);
-  // $row = mysqli_fetch_assoc($result);
-  // $fname = $row['fname'];
-  // $lname = $row["lname"];
-  // $dob = $row["dob"];
-  // $today = date("Y-m-d");
+  // get today's date
+  date_default_timezone_set("America/Vancouver");
+  $today = date("Y-m-d");
 
-  // $yesterday = date("Y-m-d", strtotime("-1 day"));
+  // get the information about Date, Fever Status and Risk Level (as the entered record)
+  // TODO: We assume that the quarantineStartDate = Date we entered the record
+  $sql_query = "select * 
+                from                 
+                  (select H.Date as Date, F.Fever_Status as FeverStatus, L.RiskLevel as RiskLevel
+                  from Input_Health_Status H, Input_Risk_Status R, Fever_Logic F, Risk_Level L
+                  where H.Date = R.Date and H.Rid = R.Rid and H.Rid = '".$Rid."' 
+                      and H.Temperature = F.Temperature 
+                      and R.ExposureToConfirmedCase = L.ExposureToConfirmedCase 
+                      and R.ConfirmedCaseInNeighbourhood = L.ConfirmedCaseInNeighbourhood 
+                      and R.CloseContactHasFlu_likeSymptom = L.CloseContactHasFlu_likeSymptom) Q1
+                Inner join
+                  (select Status as quarantineStatus, StartDate as quarantineStart
+                  from Resident_Quarantine_Status Q
+                  where Q.Rid = '".$Rid."') Q2
+                on Q2.quarantineStart = Q1.Date
+                order by Q1.Date desc";
+  $result_FS_RL = mysqli_query($conn,$sql_query);
 
-  // // get the date info of the newest record form Input_Health_Status
-  // // get the lastest endDate from all Resident_Quarantine_Status records
-  // $sql_query = "select H.Date as recordDate, EndDate as quarantineEnd
-  //                   from Input_Health_Status H, Resident_Quarantine_Status Q
-  //                   where Q.Rid = H.Rid AND H.Rid ='".$Rid."'";
-  // $result = mysqli_query($conn,$sql_query);
-  // $mostRecentRecord= 0;
-  // $latestEndDate = 0;
-  // while($row = mysqli_fetch_assoc($result)){
-  //   $recordDate = $row['recordDate'];
-  //   if ($recordDate > $mostRecentRecord){
-  //     $mostRecentRecord = $recordDate;
-  //   }
-  //   $quarantineEnd = $row['quarantineEnd'];
-  //   if ($quarantineEnd > $latestEndDate){
-  //     $latestEndDate = $quarantineEnd;
-  //   }
-  // }
-
-  // // check date : if not = $yesterday or today => expired
-  // // if not expired: check Quarantine Status and Risk_Level for newest record
-  // if ($mostRecentRecord == $yesterday || $mostRecentRecord == $today){
-  //   // endDate records > current Date
-  //   if ($latestEndDate >= $today){
-  //     $status = "Stay at Home";
-  //   }else{
-  //     $status = "Healthy";
-  //   }
-  // } else {
-  //   $status = "Expired";
-  // }
 ?>
 
 <!DOCTYPE html>
@@ -89,24 +70,43 @@
     </head>
     
     <body>
-        <!-- <h1> <?php echo $fname . " " . $lname ?> </h1>
-        <h3>Date: <?php echo $today ?><h5>
-        <h3>Date of Birth: <?php echo $dob ?> <h5>
-        <h2>Status: <?php echo $status?><h4> -->
+        <h1> <?php echo $fname . " " . $lname ?> </h1>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Fever Status</th>
+                <th>Risk Level</th>
+                <th>Quarantine Status</th>
+            </tr>
+
+            <?php while ($result = mysqli_fetch_assoc($result_FS_RL)) { ?>
+                <tr>
+                    <td><?php echo $result['Date']; ?></td>
+                    <td><?php echo $result['FeverStatus']; ?></td>
+                    <td><?php echo $result['RiskLevel']; ?></td>
+                    <td>
+                      <?php 
+                        if ($result['quarantineStatus'] == 0) {
+                          echo "Not In Quarantine";
+                        }else{
+                          echo "In Quarantine";
+                        } 
+                      ?></td>
+                </tr>
+            <?php } ?>
+          </table>
+          <br>
         
         <div>
-          
-            
             <a href="index.php" class="btn">Back</a>
 
             <form method="post" class="logout"> 
-              <input type="submit" name="logout" value="Log Out"/> 
+                <input type="submit" name="logout" value="Log Out"/> 
             </form> 
 
-            
-              <div class="status">
-            <p>Status: <span style="color: green">Logged In<span></p>
-              </div>
+            <div class="status">
+                <p>Status: <span style="color: green">Logged In<span></p>
+            </div>
         </div>
     </body>
 
