@@ -1,9 +1,4 @@
 <?php
-<<<<<<< Updated upstream
-echo 'Hello World';
-?>
-
-=======
 // Redirects to Login.html if not logged in
   if($_SESSION['Active'] == false){
     header("location:../../index.php");
@@ -86,4 +81,3 @@ echo 'Hello World';
 </html>
 
 <?php include(PRIVATE_P . '/footer.php'); ?>
->>>>>>> Stashed changes
