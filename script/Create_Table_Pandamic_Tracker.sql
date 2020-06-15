@@ -242,7 +242,7 @@ values(39.5, 'High Fever');
 insert into Input_Health_Status
 values('2020-01-29', 1, 37.5, 0);
 insert into Input_Health_Status
-values('2020-02-03', 3, 35.5, 0);
+values('2020-02-03', 3, 36, 0);
 insert into Input_Health_Status
 values('2020-03-16', 4, 38, 1);
 insert into Input_Health_Status
