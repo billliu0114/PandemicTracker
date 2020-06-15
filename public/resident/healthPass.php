@@ -12,14 +12,24 @@
   $Rid = get_rid($_SESSION["uname"]);
 
   // information needed to present
-  $sql_query = "select R.FirstName as fname, R.LastName as lname, R.DOB as dob
-                from Resident R
-                where Rid ='".$Rid."'";
+  $sql_query = "select R.Rid as id, R.FirstName as fname, R.LastName as lname, R.DOB as dob
+                from Resident R";
+                // where Rid ='".$Rid."'";
   $result = mysqli_query($conn,$sql_query);
-  $row = mysqli_fetch_assoc($result);
-  $fname = $row['fname'];
-  $lname = $row["lname"];
-  $dob = $row["dob"];
+  $fname = '';
+  $lname = '';
+  $dob = '';
+  while ($row = mysqli_fetch_assoc($result)){
+    if ($row['id'] === $Rid){
+      $fname = $row['fname'];
+      $lname = $row["lname"];
+      $dob = $row["dob"];
+    }
+  }
+  // $row = mysqli_fetch_assoc($result);
+  // $fname = $row['fname'];
+  // $lname = $row["lname"];
+  // $dob = $row["dob"];
   date_default_timezone_set("America/Vancouver");
   $today = date("Y-m-d");
 
