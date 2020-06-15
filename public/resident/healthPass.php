@@ -56,6 +56,30 @@
   } else {
     $status = "Expired";
   }
+
+  // check if in this resident's record, it has all possible risk level value (Low, Medium, High)
+  $sql = "select distinct i1.Rid as id
+  from Input_Risk_Status i1
+  where not exists (
+    select distinct r1.RiskLevel
+      from Risk_Level r1
+      where not exists (
+      select r2.RiskLevel
+          from Risk_Level r2, Input_Risk_Status i
+          where i.CloseContactHasFlu_likeSymptom = r2.CloseContactHasFlu_likeSymptom AND
+          i.ConfirmedCaseInNeighbourhood = r2.ConfirmedCaseInNeighbourhood AND
+          i.ExposureToConfirmedCase = r2.ExposureToConfirmedCase AND  i.Rid = i1.Rid
+          AND r1.RiskLevel = r2.RiskLevel
+      )
+  );";
+  $result = mysqli_query($conn,$sql);
+  $warning = "";
+  while($row = mysqli_fetch_assoc($result)){
+    $check_id = $row['id'];
+    if ($check_id === $Rid){
+         $warning = "Please keep yourself at low risk. Stay Safe.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -84,9 +108,10 @@
     
     <body>
         <h1> <?php echo "Health Pass For: " . $fname . " " . $lname ?> </h1>
-        <h3>Date: <?php echo $today ?><h5>
-        <h3>Date of Birth: <?php echo $dob ?> <h5>
-        <h2>Status: <?php echo $status?><h4>
+        <h3>Date: <?php echo $today ?><h3>
+        <h3>Date of Birth: <?php echo $dob ?> <h3>
+        <h2>Status: <?php echo $status?><h2>
+        <h3 <?php if ($warning === '') echo "hidden = \"TRUE\"";?>>Warning: <?php echo $warning?><h3>
         
         <div>
           

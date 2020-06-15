@@ -22,6 +22,7 @@
 
     function create_health($health_detail){
         global $conn;
+        create_fever_logic($health_detail);
         $sql_query = "insert into Input_Health_Status
                     values ('".$health_detail['Date']."', '".$health_detail['Rid']."', 
                            '".$health_detail['Temperature']."', '".$health_detail['ifFlu']."')";
@@ -34,6 +35,30 @@
             exit;
         }
     }
+
+    function create_fever_logic($health_detail){
+        global $conn;
+        $temperature = $health_detail['Temperature'];
+        $fever_status = '';
+        switch ($temperature){
+            case $temperature <= 37:
+                $fever_status = "Normal";
+            break;
+            case $temperature <= 38 && $temperature > 37:
+                $fever_status = "Low Fever";
+            break;
+            case $temperature > 38 && $temperature <= 39:
+                $fever_status = "Fever";
+            break;
+            case $temperature > 39:
+                $fever_status = "High Fever";
+            break;
+        };
+        $sql = "INSERT IGNORE into Fever_Logic ";
+        $sql .= "VALUES('".$health_detail['Temperature']."', '".$fever_status."');";
+        $result = mysqli_query($conn, $sql);
+    }
+
     function get_docid($userid) {
         global $conn;
         $sql = "select Did from Link_Doctor_Account ";

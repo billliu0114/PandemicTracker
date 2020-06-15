@@ -66,13 +66,13 @@
     
     <body>
         <h1> Personal Account</h1>
-        <h1> <?php echo $fname ?> <?php echo $lname ?> </h3>
+        <h1> <?php echo $fname ?> <?php echo $lname ?> </h1>
         <h3>ID: <?php echo $Rid ?></h3>
-        <h3>Phone Number <?php echo $pnum ?><h5>
+        <h3>Phone Number <?php echo $pnum ?><h3>
         <h3>Email: <?php echo $email ?></h3>
-        <h3>Healthcare Number: <?php echo $hnum ?> <h5>
-        <h3>Date of Birth: <?php echo $dob ?> <h5>
-        <h3>Main Address: <?php echo $street ?>, <?php echo $city ?>,  <?php echo $postcode ?> <h5>
+        <h3>Healthcare Number: <?php echo $hnum ?> <h3>
+        <h3>Date of Birth: <?php echo $dob ?> <h3>
+        <h3>Main Address: <?php echo $street ?>, <?php echo $city ?>,  <?php echo $postcode ?> <h3>
         
         <div>
           
