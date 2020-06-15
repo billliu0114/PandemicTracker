@@ -25,14 +25,14 @@
 
   $yesterday = date("Y-m-d", strtotime("-1 day"));
 
-  // get the date info of the newest record form Input_Health_Status
-  // get the lastest endDate from all Resident_Quarantine_Status records
-  $sql_query = "select H.Date as recordDate, EndDate as quarantineEnd
-                from Input_Health_Status H, Resident_Quarantine_Status Q
-                where Q.Rid = H.Rid AND H.Rid ='".$Rid."'";
+  // get the lastest recordDate and endDate from all Resident_Quarantine_Status records
+  $sql_query = "select StartDate as recordDate, EndDate as quarantineEnd, Status as quarantineStatus
+                from Resident_Quarantine_Status
+                where Rid ='".$Rid."'";
   $result = mysqli_query($conn,$sql_query);
   $mostRecentRecord= 0;
   $latestEndDate = 0;
+  $quarantineStatus = 0;
   while($row = mysqli_fetch_assoc($result)){
     $recordDate = $row['recordDate'];
     if ($recordDate > $mostRecentRecord){
@@ -41,6 +41,7 @@
     $quarantineEnd = $row['quarantineEnd'];
     if ($quarantineEnd > $latestEndDate){
       $latestEndDate = $quarantineEnd;
+      $qurantineStatus = $row['quarantineStatus'];
     }
   }
 
@@ -48,7 +49,7 @@
   // if not expired: check Quarantine Status and Risk_Level for newest record
   if ($mostRecentRecord == $yesterday || $mostRecentRecord == $today){
     // endDate records >= current Date
-    if ($latestEndDate >= $today){
+    if ($latestEndDate >= $today && $qurantineStatus == 1){
       $status = "Stay at Home";
     }else{
       $status = "Healthy";

@@ -26,21 +26,15 @@
 
   // get the information about Date, Fever Status and Risk Level (as the entered record)
   // TODO: We assume that the quarantineStartDate = Date we entered the record
-  $sql_query = "select * 
-                from                 
-                  (select H.Date as Date, F.Fever_Status as FeverStatus, L.RiskLevel as RiskLevel
-                  from Input_Health_Status H, Input_Risk_Status R, Fever_Logic F, Risk_Level L
-                  where H.Date = R.Date and H.Rid = R.Rid and H.Rid = '".$Rid."' 
-                      and H.Temperature = F.Temperature 
-                      and R.ExposureToConfirmedCase = L.ExposureToConfirmedCase 
-                      and R.ConfirmedCaseInNeighbourhood = L.ConfirmedCaseInNeighbourhood 
-                      and R.CloseContactHasFlu_likeSymptom = L.CloseContactHasFlu_likeSymptom) Q1
-                Inner join
-                  (select Status as quarantineStatus, StartDate as quarantineStart
-                  from Resident_Quarantine_Status Q
-                  where Q.Rid = '".$Rid."') Q2
-                on Q2.quarantineStart = Q1.Date
-                order by Q1.Date desc";
+  $sql_query = "select H.Date as Date, F.Fever_Status as FeverStatus, L.RiskLevel as RiskLevel, Q.status as quarantineStatus
+                from Input_Health_Status H, Input_Risk_Status R, Fever_Logic F, Risk_Level L, Resident_Quarantine_Status Q
+                where H.Date = R.Date and H.Rid = R.Rid and H.Rid = '" . $Rid . "'
+                    and H.Temperature = F.Temperature 
+                    and R.ExposureToConfirmedCase = L.ExposureToConfirmedCase 
+                    and R.ConfirmedCaseInNeighbourhood = L.ConfirmedCaseInNeighbourhood 
+                    and R.CloseContactHasFlu_likeSymptom = L.CloseContactHasFlu_likeSymptom
+                    and Q.Rid = H.Rid and Q.StartDate = H.Date
+                order by H.Date desc";
   $result_FS_RL = mysqli_query($conn,$sql_query);
 
 ?>
